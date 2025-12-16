@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelQR Generator - Professional QR Code Creation Tool</title>
+    <meta name="description"
+        content="Generate, customize, and manage QR codes with advanced features including database storage and export options.">
+
+    <!-- Fonts & Icons -->
+    <link rel="icon" type="image/png" href="/pixelQR/favicon-96x96.png" sizes="96x96" />
+    <!-- Google Fonts - Press Start 2P -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Custom Font -->
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('fonts/inter-normal.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('fonts/inter-bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    <!-- CSS for stacked icons -->
+   
+    <!-- Local Font Awesome Implementation -->
+    <link rel="stylesheet" href="fonts/fontawesome-free-6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-brand">
+            <div class="header-title-row">
+                <h1 class="header-title">
+                    <i class="fas fa-qrcode"></i>
+                    PixelQR Generator <span class="header-subtitle">Professional QR Code Creation Tool</span>
+                </h1>
+
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="settings-btn" class="btn btn-secondary btn-small" title="Toggle Settings Panel">
+                <i class="fas fa-cog"></i>
+                Settings
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Application Container -->
+    <main class="main-container" role="main">
+        <!-- Left Control Panel -->
+        <aside class="controls-panel" role="complementary" aria-label="QR Code Configuration">
+            <div class="panel-header">
+                <h2 class="section-title">
+                    <i class="fas fa-edit"></i>
+                    Content & Settings
+                </h2>
+            </div>
+
+            <!-- Content Input Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">QR Code Content</h3>
+
+                <div class="form-group">
+                    <label for="content-input" class="form-label">
+                        <i class="fas fa-keyboard"></i>
+                        Text or URL
+                    </label>
+                    <textarea id="content-input" class="form-textarea"
+                        placeholder="Enter the text, URL, or data you want to encode in the QR code..." rows="4"
+                        maxlength="2000"></textarea>
+                    <div class="input-help">
+                        <small class="text-secondary">Maximum 2000 characters</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QR Code Options Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Display Options</h3>
+
+                <div class="form-group">
+                    <label for="size-select" class="form-label">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                        Size
+                    </label>
+                    <select id="size-select" class="form-select">
+                        <option value="128">Small (128×128)</option>
+                        <option value="256" selected>Medium (256×256)</option>
+                        <option value="512">Large (512×512)</option>
+                        <option value="1024">Extra Large (1024×1024)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="error-correction-select" class="form-label">
+                        <i class="fas fa-shield-alt"></i>
+                        Error Correction
+                    </label>
+                    <select id="error-correction-select" class="form-select">
+                        <option value="L">Low (7% recovery)</option>
+                        <option value="M" selected>Medium (15% recovery)</option>
+                        <option value="Q">Quartile (25% recovery)</option>
+                        <option value="H">High (30% recovery)</option>
+                    </select>
+                    <div class="input-help">
+                        <small class="text-secondary">Higher levels provide better error recovery but result in denser
+                            QR codes</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Color Customization Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Color Customization</h3>
+
+                <div class="qr-options">
+                    <div class="option-group">
+                        <label class="option-label">
+                            <i class="fas fa-square"></i>
+                            Foreground Color
+                        </label>
+                        <input type="color" id="foreground-color" class="color-picker" value="#000000"
+                            title="Choose foreground color">
+                    </div>
+                    <div class="option-group">
+                        <label class="option-label">
+                            <i class="fas fa-square-full"></i>
+                            Background Color
+                        </label>
+                        <input type="color" id="background-color" class="color-picker" value="#ffffff"
+                            title="Choose background color">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Actions</h3>
+
+                <div class="form-group">
+                    <button id="generate-btn" class="btn btn-full">
+                        <i class="fas fa-magic"></i>
+                        Generate QR Code
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <button id="download-btn" class="btn btn-secondary btn-full" disabled>
+                        <i class="fas fa-download"></i>
+                        Download PNG
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <button id="save-btn" class="btn btn-secondary btn-full" disabled>
+                        <i class="fas fa-save"></i>
+                        Save to Database
+                    </button>
+                </div>
+            </section>
+
+            <!-- Database Status Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Database Status</h3>
+
+                <div class="database-status">
+                    <div class="form-group">
+                        <div id="db-status-indicator" class="status-indicator" title="Connection Status"></div>
+                        <div class="status-info">
+                            <div class="status-line">
+                                <small class="text-secondary">
+                                    <span id="db-status-text">Not connected</span>
+                                </small>
+                            </div>
+                            <div class="status-line">
+                                <small class="text-secondary">Using local storage</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button id="connect-github-btn" class="btn btn-small" title="Connect to GitHub Database">
+                        <i class="fab fa-github"></i>
+                        Connect
+                    </button>
+                </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Center Preview Area -->
+        <section class="preview-area" role="region" aria-label="QR Code Preview">
+            <div class="preview-header">
+                <h2 class="section-title">
+                    <i class="fas fa-eye"></i>
+                    QR Code Preview
+                </h2>
+                <div class="preview-actions">
+                    <button id="export-btn" class="btn btn-secondary btn-small" disabled>
+                        <i class="fas fa-file-export"></i>
+                        Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="preview-content">
+                <div id="qr-preview" class="qr-preview" role="img" aria-label="QR Code Preview">
+                    <div class="preview-placeholder">
+                        <i class="fas fa-qrcode"></i>
+                        <h3>Ready to Generate</h3>
+                        <p>Enter text or a URL above to create your QR code</p>
+                        <div class="preview-features">
+                            <span><i class="fas fa-check"></i> Real-time preview</span>
+                            <span><i class="fas fa-check"></i> Custom colors</span>
+                            <span><i class="fas fa-check"></i> Multiple formats</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Settings Panel -->
+        <aside class="settings-panel" role="complementary" aria-label="Database & Export Settings">
+            <div class="panel-header">
+                <h2 class="section-title">
+                    <i class="fas fa-database"></i>
+                    Database & Export
+                </h2>
+            </div>
+
+            <!-- Saved QR Codes Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Saved QR Codes</h3>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-archive"></i>
+                        Your Collection
+                    </label>
+                    <div id="saved-codes-list" class="saved-codes" role="list">
+                        <div class="empty-state">
+                            <i class="fas fa-database"></i>
+                            <h4>No saved QR codes</h4>
+                            <p>Generate and save your first QR code to see it here</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Database Actions Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Database Operations</h3>
+
+                <div class="form-group">
+                    <button id="load-all-btn" class="btn btn-secondary btn-full">
+                        <i class="fas fa-sync"></i>
+                        Load All from Database
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <button id="sync-btn" class="btn btn-secondary btn-full">
+                        <i class="fas fa-upload"></i>
+                        Sync Current QR Code
+                    </button>
+                </div>
+            </section>
+
+            <!-- Export Options Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Export Options</h3>
+
+                <div class="form-group">
+                    <label for="export-format-select" class="form-label">
+                        <i class="fas fa-file-export"></i>
+                        Export Format
+                    </label>
+                    <select id="export-format-select" class="form-select">
+                        <option value="png" selected>PNG Image</option>
+                        <option value="svg">SVG Vector</option>
+                        <option value="pdf">PDF Document</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Backup & Restore Section -->
+            <section class="form-section">
+                <h3 class="form-section-title">Backup & Restore</h3>
+
+                <div class="form-group">
+                    <button id="export-all-btn" class="btn btn-secondary btn-full">
+                        <i class="fas fa-download"></i>
+                        Export All QR Codes
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                    <button id="import-btn" class="btn btn-secondary btn-full">
+                        <i class="fas fa-upload"></i>
+                        Import QR Codes
+                    </button>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Notification System -->
+    <div id="notification-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/databaseManager.js"></script>
+    <script src="js/export-manager.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

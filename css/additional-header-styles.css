@@ -1,0 +1,30 @@
+/* Additional CSS for header and status layout */
+
+.header-title-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.header-subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 32px;
+}
+
+.status-line {
+    margin-bottom: 4px;
+}
+
+.status-line:last-child {
+    margin-bottom: 0;
+}
+
+.status-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
